@@ -37,8 +37,19 @@ jobs:
         run: terraform import aws_elastic_beanstalk_application.elastic_service_app ElasticServiceApplication
         working-directory: ${{ github.workspace }}/terraform/deployment
 
+      - name: Fetch Elastic Beanstalk Environment ID
+        id: fetch_env_id
+        run: |
+          env_id=$(aws elasticbeanstalk describe-environments --environment-names ElasticServiceEnvironment --query "Environments[0].EnvironmentId" --output text)
+          echo "::set-output name=env_id::$env_id"
+        working-directory: ${{ github.workspace }}/terraform/deployment
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'us-west-2'
+
       - name: Import Elastic Beanstalk Environment
-        run: terraform import aws_elastic_beanstalk_environment.elastic_service_env ElasticServiceEnvironment
+        run: terraform import aws_elastic_beanstalk_environment.elastic_service_env ${{ steps.fetch_env_id.outputs.env_id }}
         working-directory: ${{ github.workspace }}/terraform/deployment
 
       - name: Terraform Plan
