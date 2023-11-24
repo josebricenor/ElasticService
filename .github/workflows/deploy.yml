@@ -38,6 +38,10 @@ jobs:
             -backend-config="region=us-west-2"
         working-directory: ${{ github.workspace }}/terraform/deployment
 
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
+        working-directory: ${{ github.workspace }}/terraform/deployment
+
       - name: Terraform Plan
         run: terraform plan -out=full.plan
         working-directory: ${{ github.workspace }}/terraform/deployment
