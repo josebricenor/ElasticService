@@ -31,13 +31,13 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-        working-directory: ${{ github.workspace }}/deployment
+        working-directory: ${{ github.workspace }}/terraform/deployment
 
       - name: Terraform Plan
         run: terraform plan -out=full.plan
-        working-directory: ${{ github.workspace }}/deployment
+        working-directory: ${{ github.workspace }}/terraform/deployment
 
       - name: Terraform Apply
         run: terraform apply "full.plan" -auto-approve
-        working-directory: ${{ github.workspace }}/deployment
+        working-directory: ${{ github.workspace }}/terraform/deployment
 
