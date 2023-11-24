@@ -33,33 +33,6 @@ jobs:
         run: terraform init
         working-directory: ${{ github.workspace }}/terraform/deployment
 
-      - name: Import Elastic Beanstalk Application
-        run: terraform import aws_elastic_beanstalk_application.elastic_service_app ElasticServiceApplication
-        working-directory: ${{ github.workspace }}/terraform/deployment
-
-      - name: Fetch Elastic Beanstalk Environment ID
-        id: fetch_env_id
-        run: |
-          env_id=$(aws elasticbeanstalk describe-environments --environment-names ElasticServiceEnvironment --query "Environments[0].EnvironmentId" --output text)
-          echo "::set-output name=env_id::$env_id"
-        working-directory: ${{ github.workspace }}/terraform/deployment
-        env:
-          aws-access-key-id: AKIASDVWZ24TK6KALRWS
-          aws-secret-access-key: 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
-          aws-region: 'us-west-2'
-
-      - name: Import Elastic Beanstalk Environment
-        run: terraform import aws_elastic_beanstalk_environment.elastic_service_env ${{ steps.fetch_env_id.outputs.env_id }}
-        working-directory: ${{ github.workspace }}/terraform/deployment
-
-      - name: Terraform Plan
-        run: terraform plan -out=full.plan
-        working-directory: ${{ github.workspace }}/terraform/deployment
-
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve
-        working-directory: ${{ github.workspace }}/terraform/deployment
-
       - name: Terraform Plan
         run: terraform plan -out=full.plan
         working-directory: ${{ github.workspace }}/terraform/deployment
