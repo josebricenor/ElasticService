@@ -33,18 +33,6 @@ jobs:
         run: terraform init
         working-directory: ${{ github.workspace }}/terraform/deployment
 
-      - name: Import Elastic Beanstalk Application
-        run: terraform import aws_elastic_beanstalk_application.elastic_service_app ElasticServiceApplication
-        working-directory: ${{ github.workspace }}/terraform/deployment
-
-      - name: Import Elastic Beanstalk Application Version
-        run: terraform import aws_elastic_beanstalk_application_version.elastic_service_version ElasticServiceApplication:ElasticService-0.0.1-SNAPSHOT
-        working-directory: ${{ github.workspace }}/terraform/deployment
-
-      - name: Import Elastic Beanstalk Environment
-        run: terraform import aws_elastic_beanstalk_environment.elastic_service_env ElasticServiceEnvironment
-        working-directory: ${{ github.workspace }}/terraform/deployment
-
       - name: Terraform Plan
         run: terraform plan -out=full.plan
         working-directory: ${{ github.workspace }}/terraform/deployment
