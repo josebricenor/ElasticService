@@ -4,6 +4,11 @@ provider "aws" {
   secret_key = "YMoEdsgYk9ckrEWIPfUm8GC3Gv046pqZxr8HaGLS"
 }
 
+terraform {
+  backend "s3" {
+  }
+}
+
 data "aws_vpc" "default" {
   default = true
 }
