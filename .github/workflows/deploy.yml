@@ -31,7 +31,11 @@ jobs:
         run: aws s3 cp target/ElasticService-0.0.1-SNAPSHOT.jar s3://elastic-service-app/ElasticService-0.0.1-SNAPSHOT.jar
 
       - name: Terraform Init
-        run: terraform init
+        run: |
+          terraform init \
+            -backend-config="bucket=elastic-service-app" \
+            -backend-config="key=terraform.tfstate" \
+            -backend-config="region=us-west-2
         working-directory: ${{ github.workspace }}/terraform/deployment
 
       - name: Terraform Plan
