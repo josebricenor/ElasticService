@@ -1,10 +1,11 @@
 package com.vicarius.elasticservice.controller;
 import com.vicarius.elasticservice.service.ElasticsearchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/")
 public class ElasticsearchController {
 
   private final ElasticsearchService elasticsearchService;
@@ -14,17 +15,22 @@ public class ElasticsearchController {
     this.elasticsearchService = elasticsearchService;
   }
 
-  @PostMapping("/createIndex")
+  @GetMapping("/")
+  public ResponseEntity<String> root() {
+    return ResponseEntity.ok("Service is up and running!");
+  }
+
+  @PostMapping("/api/createIndex")
   public String createIndex(@RequestParam String indexName) {
     return elasticsearchService.createIndex(indexName);
   }
 
-  @PostMapping("/createDocument")
+  @PostMapping("/api/createDocument")
   public String createDocument(@RequestParam String indexName, @RequestBody String document) {
     return elasticsearchService.createDocument(indexName, document);
   }
 
-  @GetMapping("/getDocument/{index}/{id}")
+  @GetMapping("/api/getDocument/{index}/{id}")
   public String getDocument(@PathVariable String index, @PathVariable String id) {
     return elasticsearchService.getDocumentById(index, id);
   }
