@@ -63,6 +63,30 @@ resource "aws_elastic_beanstalk_environment" "elastic_service_env" {
   }
 
   setting {
+    namespace = "aws:elasticbeanstalk:environment"
+    name      = "LoadBalancerType"
+    value     = "application"
+  }
+
+  setting {
+    namespace = "aws:ec2:vpc"
+    name      = "ELBScheme"
+    value     = "internet facing"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:environment:process:default"
+    name      = "MatcherHTTPCode"
+    value     = 200
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:environment:process:default"
+    name      = "HealthCheckPath"
+    value     = "/docs"
+  }
+
+  setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "S3_BUCKET"
     value     = "elastic-service-app"

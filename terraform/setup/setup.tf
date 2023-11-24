@@ -61,3 +61,34 @@ resource "aws_elasticsearch_domain" "elastic_service" {
 resource "aws_s3_bucket" "elastic_service_bucket" {
   bucket = "elastic-service-app"
 }
+
+data "aws_vpc" "default" {
+  default = true
+}
+
+resource "aws_security_group" "elastic_beanstalk_sg" {
+  name        = "elastic-beanstalk-sg"
+  description = "Security group for Elastic Beanstalk environment"
+  vpc_id      = data.aws_vpc.default.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
