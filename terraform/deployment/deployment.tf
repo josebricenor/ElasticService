@@ -8,7 +8,7 @@ data "aws_vpc" "default" {
   default = true
 }
 
-resource "aws_security_group" "elastic_beanstalk_sg" {
+/*resource "aws_security_group" "elastic_beanstalk_sg" {
   name        = "elastic-beanstalk-sg"
   description = "Security group for Elastic Beanstalk environment"
   vpc_id      = data.aws_vpc.default.id
@@ -33,7 +33,7 @@ resource "aws_security_group" "elastic_beanstalk_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
+}*/
 
 resource "aws_elastic_beanstalk_application" "elastic_service_app" {
   name        = "ElasticServiceApplication"
@@ -54,7 +54,7 @@ resource "aws_elastic_beanstalk_environment" "elastic_service_env" {
   solution_stack_name = "64bit Amazon Linux 2023 v4.1.1 running Corretto 17"
   version_label       = aws_elastic_beanstalk_application_version.elastic_service_version.name
 
-  depends_on = [aws_security_group.elastic_beanstalk_sg]
+  //depends_on = [aws_security_group.elastic_beanstalk_sg]
 
   setting {
     namespace = "aws:autoscaling:asg"
@@ -83,7 +83,7 @@ resource "aws_elastic_beanstalk_environment" "elastic_service_env" {
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "SecurityGroups"
-    value     = aws_security_group.elastic_beanstalk_sg.name
+    value     = "elastic-beanstalk-sg"
   }
 }
 
