@@ -26,6 +26,8 @@ import software.amazon.awssdk.regions.Region;
 @Service
 public class ElasticsearchService {
 
+  public static final String DOC = "/_doc/";
+  public static final String ES = "es";
   private final Aws4Signer signer;
   private final StaticCredentialsProvider credentialsProvider;
   private static final String SERVICE_ENDPOINT = "https://search-elastic-service-domain-bho5awv6dnw6wys3db6qhjj6oy.us-west-2.es.amazonaws.com";
@@ -52,7 +54,7 @@ public class ElasticsearchService {
 
       Aws4SignerParams signerParams = Aws4SignerParams.builder()
           .awsCredentials(credentialsProvider.resolveCredentials())
-          .signingName("es")
+          .signingName(ES)
           .signingRegion(Region.of(REGION))
           .build();
 
@@ -79,7 +81,7 @@ public class ElasticsearchService {
 
   public String createDocument(String indexName, String documentJson) {
     try {
-      URI endpoint = new URI(SERVICE_ENDPOINT + "/" + indexName + "/_doc/");
+      URI endpoint = new URI(SERVICE_ENDPOINT + "/" + indexName + DOC);
       byte[] contentBytes = documentJson.getBytes(StandardCharsets.UTF_8);
 
       SdkHttpFullRequest.Builder requestBuilder = SdkHttpFullRequest.builder()
@@ -93,7 +95,7 @@ public class ElasticsearchService {
 
       Aws4SignerParams signerParams = Aws4SignerParams.builder()
           .awsCredentials(credentialsProvider.resolveCredentials())
-          .signingName("es")
+          .signingName(ES)
           .signingRegion(Region.of(REGION))
           .build();
 
@@ -137,7 +139,7 @@ public class ElasticsearchService {
 
   public String getDocumentById(String index, String documentId) {
     try {
-      URI endpoint = new URI(SERVICE_ENDPOINT + "/" + index + "/_doc/" + documentId);
+      URI endpoint = new URI(SERVICE_ENDPOINT + "/" + index + DOC + documentId);
 
       SdkHttpFullRequest signedRequest = SdkHttpFullRequest.builder()
           .method(SdkHttpMethod.GET)
@@ -146,7 +148,7 @@ public class ElasticsearchService {
 
       Aws4SignerParams signerParams = Aws4SignerParams.builder()
           .awsCredentials(credentialsProvider.resolveCredentials())
-          .signingName("es")
+          .signingName(ES)
           .signingRegion(Region.of(REGION))
           .build();
 
