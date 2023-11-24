@@ -19,12 +19,14 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
-      - name: Upload JAR to AWS S3
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: AKIASDVWZ24TK6KALRWS
           aws-secret-access-key: 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
           aws-region: 'us-west-2'
+
+      - name: Upload JAR to AWS S3
         run: aws s3 cp target/ElasticService-0.0.1-SNAPSHOT.jar s3://elastic-service-app/ElasticService-0.0.1-SNAPSHOT.jar
 
       - name: Terraform Init
@@ -38,3 +40,4 @@ jobs:
       - name: Terraform Apply
         run: terraform apply "full.plan" -auto-approve
         working-directory: ./deployment
+
