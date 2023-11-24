@@ -35,7 +35,7 @@ jobs:
           terraform init \
             -backend-config="bucket=elastic-service-app" \
             -backend-config="key=terraform.tfstate" \
-            -backend-config="region=us-west-2
+            -backend-config="region=us-west-2"
         working-directory: ${{ github.workspace }}/terraform/deployment
 
       - name: Terraform Plan
